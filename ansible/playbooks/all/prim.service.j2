@@ -1,0 +1,20 @@
+[Unit]
+Description=Prime {{ node_type }}
+After=network-online.target
+Wants=network-online.target
+ 
+[Service]
+Type=simple
+User=deploy
+Group=deploy
+Restart=on-failure
+RestartSec=30
+Environment=MIX_ENV=prod
+Environment=LANG=en_US.UTF-8
+Environment=RELEASE_COOKIE={{ release_cookie }}
+ 
+WorkingDirectory=/opt/prim/release
+ExecStart=/opt/prim/release/bin/{{ node_type }} start --name {{ node_type }}
+
+[Install]
+WantedBy=multi-user.target

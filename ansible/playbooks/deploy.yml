@@ -1,0 +1,37 @@
+- name: Deploy Prim to Gateway & Clustermembers
+  hosts:
+    - gateway
+    - clustermember
+  vars:
+    version: "{{ lookup('env', 'version') }}"
+    archive:
+      worker: "worker-{{ version }}.tar.gz"
+      main: "main-{{ version }}.tar.gz"
+  tasks:
+    - name: Create dirs
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: deploy
+        group: deploy
+      loop:
+        - /opt/prim/release
+        - /opt/prim/old-release
+    - name: Stop Release
+      systemd:
+        name: prim
+        state: stopped
+    - name: Move old release
+      shell:
+        cmd: rm -rf /opt/prim/old-release/*; mv /opt/prim/release/* /opt/prim/old-release/ || true
+        warn: false
+    - name: Copy & extract release
+      ansible.builtin.unarchive:
+        src: "../../_build/prod/{{ archive[hostvars[inventory_hostname].node_type] }}"
+        dest: /opt/prim/release
+        owner: deploy
+        group: deploy
+    - name: Start Release
+      systemd:
+        name: prim
+        state: started
