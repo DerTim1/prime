@@ -94,6 +94,30 @@ module "prim-prod-clustermember-4" {
   ssh_keys = [hcloud_ssh_key.td.id]
 }
 
+module "prim-prod-clustermember-5" {
+  source = "./../modules/clustermember/"
+
+  server_name = "barcelona"
+
+  network_id = hcloud_network.local.id
+  subnet = hcloud_network_subnet.local-12
+  private_ip4 = "10.11.12.15"
+
+  ssh_keys = [hcloud_ssh_key.td.id]
+}
+
+module "prim-prod-clustermember-6" {
+  source = "./../modules/clustermember/"
+
+  server_name = "berlin"
+
+  network_id = hcloud_network.local.id
+  subnet = hcloud_network_subnet.local-12
+  private_ip4 = "10.11.12.16"
+
+  ssh_keys = [hcloud_ssh_key.td.id]
+}
+
 output "gateway_ip4" {
   value = module.prim-prod-gateway-1.ipv4_address
 }
