@@ -14,7 +14,7 @@ let
   #     sha256 = "0y3bn4pshk3dqvxb0pnb679x44a5mz27r9l7cscxafa98ifsgfsn";
   #   };
   # });
-  beamPkg = pkgs.beam.packagesWith pkgs.erlangR23;
+  beamPkg = pkgs.beam.packagesWith pkgs.erlangR24;
 
   # # Elixir
   # elixir_custom = beamPkg.elixir_1_12;
@@ -35,10 +35,10 @@ in with pkgs; {
   eccEnv = stdenv.mkDerivation {
     name = "env";
     nativeBuildInputs = [
-      erlangR23
-      elixir_1_12
+      erlangR24
+      elixir_1_13
       azure-cli
-      ansible_2_9
+      ansible_2_12
       vagrant
       inotify-tools
       terraform
